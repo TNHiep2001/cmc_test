@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import routes from "./routes";
+import STORAGE_KEYS from "./constants/storages";
+import "./scss/styles.scss";
 
-function App() {
+const DefaultLayout = React.lazy(() => import("./layout/DefaultLayout"));
+
+const loading = (
+  <div className="pt-3 text-center">
+    <div className="sk-spinner sk-spinner-pulse" />
+  </div>
+);
+
+const App = () => {
+  const isAuthenticated = localStorage.getItem(STORAGE_KEYS.TOKEN) || "haha"; //fake data token
+
+  const renderListRouter = () => {
+    return routes.map((route, index) => (
+      <Route
+        key={index}
+        path={route.path}
+        element={
+          isAuthenticated ? (
+            <DefaultLayout component={route.component} />
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
+      />
+    ));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Suspense fallback={loading}>
+        <Routes>{renderListRouter()}</Routes>
+      </Suspense>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
