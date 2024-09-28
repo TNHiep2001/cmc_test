@@ -1,0 +1,26 @@
+.wrapper {
+    padding: 20px;
+}
+
+.add_product {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.btn_add_product {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 6px;
+    color: #ff881d;
+    border: 1px solid #ff881d;
+    border-radius: 8px;
+}
+
+.list_product {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+

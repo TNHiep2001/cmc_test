@@ -1,5 +1,7 @@
 import ListProduct from "./views/listProduct";
 import DetailProduct from "./views/detailProduct";
+import ManageProduct from "./views/manageProduct";
+import ProductForm from "./views/manageProduct/ProductForm";
 
 const routes = [
   {
@@ -9,6 +11,18 @@ const routes = [
   {
     path: "/detailProduct",
     component: DetailProduct,
+  },
+  {
+    path: "/manageProduct",
+    component: ManageProduct,
+  },
+  {
+    path: "/manageProduct/new",
+    component: ProductForm,
+  },
+  {
+    path: "/manageProduct/:id/edit",
+    component: ProductForm,
   },
 ];
 

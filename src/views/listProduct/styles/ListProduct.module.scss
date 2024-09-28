@@ -1,0 +1,12 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 20px 0;
+
+}
+
+.list_product {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
