@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import routes from "./routes";
 import STORAGE_KEYS from "./constants/storages";
 import "./scss/styles.scss";
+import { AppProvider } from "./contexts/app-context";
 
 const DefaultLayout = React.lazy(() => import("./layout/DefaultLayout"));
 const Login = React.lazy(() => import("./pages/login/Login"));
@@ -14,7 +15,7 @@ const loading = (
 );
 
 const App = () => {
-  const isAuthenticated = localStorage.getItem(STORAGE_KEYS.TOKEN) || "haha"; //fake data token
+  const isAuthenticated = localStorage.getItem(STORAGE_KEYS.TOKEN);
 
   const renderListRouter = () => {
     return routes.map((route, index) => (
@@ -34,13 +35,15 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <Suspense fallback={loading}>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Navigate to="/listProduct" />} />
-          {renderListRouter()}
-        </Routes>
-      </Suspense>
+      <AppProvider>
+        <Suspense fallback={loading}>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Navigate to="/listProduct" />} />
+            {renderListRouter()}
+          </Routes>
+        </Suspense>
+      </AppProvider>
     </BrowserRouter>
   );
 };

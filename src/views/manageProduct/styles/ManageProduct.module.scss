@@ -19,7 +19,21 @@
     }
 }
 
+.btn_back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 16px;
+    background: #000;
+    border-radius: 50%;
+    cursor: pointer;
 
+    .icon_back {
+        color: #fff;
+    }
+}
 
 .list_product {
     display: flex;

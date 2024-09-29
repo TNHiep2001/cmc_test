@@ -4,7 +4,7 @@ import { Button, Typography } from "@mui/material";
 import classNames from "classnames/bind";
 import styles from "./styles/ManageProduct.module.scss";
 import ItemProductManage from "./components/ItemProductManage";
-import { AddCircleOutline } from "@mui/icons-material";
+import { AddCircleOutline, ChevronLeft } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(styles);
@@ -95,6 +95,18 @@ const FAKE_DATA = [
 const ManageProduct = (props) => {
   const navigate = useNavigate();
 
+  const handleBack = () => {
+    navigate("/listProduct");
+  };
+
+  const renderBtnBack = () => {
+    return (
+      <div className={cx("btn_back")} onClick={handleBack}>
+        <ChevronLeft className={cx("icon_back")} />
+      </div>
+    );
+  };
+
   const renderTitle = () => {
     return (
       <Typography fontSize={26} fontWeight={600}>
@@ -128,6 +140,7 @@ const ManageProduct = (props) => {
 
   return (
     <div className={cx("wrapper")}>
+      {renderBtnBack()}
       {renderTitle()}
       {renderBtnAddProduct()}
       {renderListProduct()}
