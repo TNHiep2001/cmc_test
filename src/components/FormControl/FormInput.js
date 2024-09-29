@@ -1,4 +1,10 @@
-import { Box, Grid, InputLabel, OutlinedInput } from "@mui/material";
+import {
+  Box,
+  FormHelperText,
+  Grid,
+  InputLabel,
+  OutlinedInput,
+} from "@mui/material";
 import PropTypes from "prop-types";
 
 const FormInput = ({
@@ -31,6 +37,7 @@ const FormInput = ({
           sx={{ fontWeight: "400", color: "#000", fontSize: 16 }}
           htmlFor={id}
         >
+          {label}{" "}
           {isRequired && (
             <Box color="red" component="span">
               *
@@ -62,18 +69,29 @@ const FormInput = ({
           disabled={disabled}
           {...restProps}
         />
-        {maxLength ? (
-          <Grid
-            item
-            xs={12}
-            md={1}
-            display="flex"
-            justifyContent="flex-end"
-            color={disabled ? "#bfbfbf" : "#000"}
-          >
-            {`${value?.length || 0}/${maxLength}`}
+        <Grid
+          item
+          xs={12}
+          md={12}
+          display="flex"
+          justifyContent="space-between"
+        >
+          <Grid item xs={12} md={11}>
+            {error && <FormHelperText error>{error}</FormHelperText>}
           </Grid>
-        ) : null}
+          {maxLength ? (
+            <Grid
+              item
+              xs={12}
+              md={1}
+              display="flex"
+              justifyContent="flex-end"
+              color={disabled ? "#bfbfbf" : "#000"}
+            >
+              {`${value?.length || 0}/${maxLength}`}
+            </Grid>
+          ) : null}
+        </Grid>
       </Grid>
     );
   };

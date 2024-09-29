@@ -5,6 +5,7 @@ import STORAGE_KEYS from "./constants/storages";
 import "./scss/styles.scss";
 
 const DefaultLayout = React.lazy(() => import("./layout/DefaultLayout"));
+const Login = React.lazy(() => import("./pages/login/Login"));
 
 const loading = (
   <div className="pt-3 text-center">
@@ -34,7 +35,11 @@ const App = () => {
   return (
     <BrowserRouter>
       <Suspense fallback={loading}>
-        <Routes>{renderListRouter()}</Routes>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Navigate to="/listProduct" />} />
+          {renderListRouter()}
+        </Routes>
       </Suspense>
     </BrowserRouter>
   );

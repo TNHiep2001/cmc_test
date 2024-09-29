@@ -9,7 +9,7 @@ import {
   InputLabel,
   TextField,
 } from "@mui/material";
-import Close from "assets/icons/Close";
+import { Close } from "@mui/icons-material";
 
 // component tái sử dụng nhiều lần
 const FormSelect = ({
