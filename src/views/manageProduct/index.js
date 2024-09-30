@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Button, Typography } from "@mui/material";
 import classNames from "classnames/bind";
@@ -6,94 +6,33 @@ import styles from "./styles/ManageProduct.module.scss";
 import ItemProductManage from "./components/ItemProductManage";
 import { AddCircleOutline, ChevronLeft } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { getListProduct } from "../../service/product";
+import { statusCode } from "../../constants/status";
 
 const cx = classNames.bind(styles);
 
-const FAKE_DATA = [
-  {
-    id: 1,
-    title: "Sản Phẩm 1",
-    desc: "Mô tả sản phẩm 1 nhé",
-    price: 300000,
-    image:
-      "https://down-vn.img.susercontent.com/file/sg-11134201-23010-qusbwpefyylvd3.webp",
-    quantity: 1,
-    status: "Còn hàng",
-  },
-  {
-    id: 2,
-    title: "Sản Phẩm 2",
-    desc: "Mô tả sản phẩm 2 nhé",
-    price: 300000,
-    image:
-      "https://down-vn.img.susercontent.com/file/sg-11134201-23010-qusbwpefyylvd3.webp",
-    quantity: 1,
-    status: "Còn hàng",
-  },
-  {
-    id: 3,
-    title: "Sản Phẩm 3",
-    desc: "Mô tả sản phẩm 3 nhé",
-    price: 300000,
-    image:
-      "https://down-vn.img.susercontent.com/file/sg-11134201-23010-qusbwpefyylvd3.webp",
-    quantity: 1,
-    status: "Còn hàng",
-  },
-  {
-    id: 4,
-    title: "Sản Phẩm 4",
-    desc: "Mô tả sản phẩm 4 nhé",
-    price: 300000,
-    image:
-      "https://down-vn.img.susercontent.com/file/sg-11134201-23010-qusbwpefyylvd3.webp",
-    quantity: 1,
-    status: "Còn hàng",
-  },
-  {
-    id: 5,
-    title: "Sản Phẩm 5",
-    desc: "Mô tả sản phẩm 5 nhé",
-    price: 300000,
-    image:
-      "https://down-vn.img.susercontent.com/file/sg-11134201-23010-qusbwpefyylvd3.webp",
-    quantity: 1,
-    status: "Còn hàng",
-  },
-  {
-    id: 6,
-    title: "Sản Phẩm 6",
-    desc: "Mô tả sản phẩm 6 nhé",
-    price: 300000,
-    image:
-      "https://down-vn.img.susercontent.com/file/sg-11134201-23010-qusbwpefyylvd3.webp",
-    quantity: 1,
-    status: "Còn hàng",
-  },
-  {
-    id: 7,
-    title: "Sản Phẩm 7",
-    desc: "Mô tả sản phẩm 7 nhé",
-    price: 300000,
-    image:
-      "https://down-vn.img.susercontent.com/file/sg-11134201-23010-qusbwpefyylvd3.webp",
-    quantity: 1,
-    status: "Còn hàng",
-  },
-  {
-    id: 8,
-    title: "Sản Phẩm 8",
-    desc: "Mô tả sản phẩm 8 nhé",
-    price: 300000,
-    image:
-      "https://down-vn.img.susercontent.com/file/sg-11134201-23010-qusbwpefyylvd3.webp",
-    quantity: 1,
-    status: "Còn hàng",
-  },
-];
-
 const ManageProduct = (props) => {
   const navigate = useNavigate();
+
+  const [dataProduct, setDataProduct] = useState([]);
+
+  const handleGetListProduct = useCallback(async () => {
+    const { data, status_code, message } = await getListProduct();
+
+    if (status_code === statusCode.successNumer) {
+      setDataProduct(data);
+    } else {
+      //bắn thông báo lỗi ở đây
+    }
+  }, []);
+
+  useEffect(() => {
+    handleGetListProduct();
+  }, [handleGetListProduct]);
+
+  const handleRefesh = () => {
+    handleGetListProduct();
+  };
 
   const handleBack = () => {
     navigate("/listProduct");
@@ -131,8 +70,12 @@ const ManageProduct = (props) => {
   const renderListProduct = () => {
     return (
       <div className={cx("list_product")}>
-        {FAKE_DATA.map((item) => (
-          <ItemProductManage infoItem={item} />
+        {dataProduct.map((item, index) => (
+          <ItemProductManage
+            key={index}
+            infoItem={item}
+            handleRefesh={handleRefesh}
+          />
         ))}
       </div>
     );

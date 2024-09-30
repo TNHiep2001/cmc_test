@@ -5,13 +5,15 @@ import classNames from "classnames/bind";
 import styles from "./styles/PopupMenu.module.scss";
 import {
   CloseOutlined,
+  LoginOutlined,
   LogoutOutlined,
   ManageSearch,
   Person2Outlined,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../../store/reducers/infoUser";
+import { getInfoUserSelector } from "../../store/reducers/infoUser/infoUserSelector";
 
 const cx = classNames.bind(styles);
 
@@ -19,16 +21,23 @@ const PopupMenu = ({ isShowPopupMenu, setIsShowPopupMenu }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { token } = useSelector(getInfoUserSelector);
+
   const handleLogout = () => {
     localStorage.clear();
     dispatch(logOut());
     setIsShowPopupMenu(false);
-    navigate("/login");
+    navigate("/listProduct");
   };
 
   const handleNavigateManageProd = () => {
     setIsShowPopupMenu(false);
     navigate("/manageProduct");
+  };
+
+  const handleNavigateLogin = () => {
+    setIsShowPopupMenu(false);
+    navigate("/login");
   };
 
   const renderManageProduct = () => {
@@ -64,6 +73,26 @@ const PopupMenu = ({ isShowPopupMenu, setIsShowPopupMenu }) => {
     );
   };
 
+  const renderActionMenu = () => {
+    if (token) {
+      return (
+        <>
+          {renderManageProduct()}
+          {renderUserProfile()}
+          {renderActionLogout()}
+        </>
+      );
+    }
+    return (
+      <div className={cx("action_login")} onClick={handleNavigateLogin}>
+        <Button className={cx("btn_login")}>
+          <LoginOutlined /> Đăng nhập
+        </Button>
+        ;
+      </div>
+    );
+  };
+
   return (
     <Drawer
       anchor="left"
@@ -76,11 +105,7 @@ const PopupMenu = ({ isShowPopupMenu, setIsShowPopupMenu }) => {
         <div onClick={() => setIsShowPopupMenu(false)}>
           <CloseOutlined className={cx("icon_close")} />
         </div>
-        <div className={cx("inner")}>
-          {renderManageProduct()}
-          {renderUserProfile()}
-          {renderActionLogout()}
-        </div>
+        <div className={cx("inner")}>{renderActionMenu()}</div>
       </div>
     </Drawer>
   );

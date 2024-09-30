@@ -1,5 +1,6 @@
 export const statusCode = {
   successNumer: 200,
+  createdSuccess: 201,
   success: "success",
   unauthorized: 401,
   errorServer: 500,

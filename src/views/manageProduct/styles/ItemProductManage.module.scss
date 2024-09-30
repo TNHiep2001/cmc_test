@@ -17,6 +17,7 @@
 }
 
 .info_product {
+    width: 40%;
     .title {
         font-size: 17px;
         font-weight: 600;
@@ -40,6 +41,10 @@
     flex: 1;
     font-weight: 600;
     color: #225d1e;
+
+    &.out_of_stock {
+        color: #891900;
+    }
 }
 
 .list_action {

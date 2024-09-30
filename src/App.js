@@ -17,20 +17,27 @@ const loading = (
 const App = () => {
   const isAuthenticated = localStorage.getItem(STORAGE_KEYS.TOKEN);
 
+  // Các routes công khai (không cần xác thực)
+  const publicRoutes = ["/listProduct", "/detailProduct/:id"];
+
   const renderListRouter = () => {
-    return routes.map((route, index) => (
-      <Route
-        key={index}
-        path={route.path}
-        element={
-          isAuthenticated ? (
-            <DefaultLayout component={route.component} />
-          ) : (
-            <Navigate to="/login" />
-          )
-        }
-      />
-    ));
+    return routes.map((route, index) => {
+      const isPublicRoute = publicRoutes.includes(route.path);
+
+      return (
+        <Route
+          key={index}
+          path={route.path}
+          element={
+            isAuthenticated || isPublicRoute ? (
+              <DefaultLayout component={route.component} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+      );
+    });
   };
 
   return (

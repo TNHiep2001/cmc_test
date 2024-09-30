@@ -12,7 +12,7 @@ const ItemProduct = ({ infoItem }) => {
   const navigate = useNavigate();
 
   const handleDetail = () => {
-    navigate("/detailProduct");
+    navigate(`/detailProduct/${infoItem?.id}`);
   };
 
   return (
@@ -21,7 +21,7 @@ const ItemProduct = ({ infoItem }) => {
         <img src={infoItem.image} alt="" className={cx("image")} />
         <div className={cx("content")}>
           <div className={cx("title")}>{infoItem.title}</div>
-          <div className={cx("desc")}>{infoItem.desc}</div>
+          <div className={cx("desc")}>{infoItem.description}</div>
           <div className={cx("price")}>{convertPrice(infoItem.price)}</div>
           <Button
             onClick={handleDetail}

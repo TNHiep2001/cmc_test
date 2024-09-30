@@ -45,7 +45,7 @@ const AppHeader = (props) => {
   const handleLogout = () => {
     localStorage.clear();
     dispatch(logOut());
-    navigate("/login");
+    navigate("/listProduct");
     setShowLogout(false);
     setAnchorEl(null);
   };

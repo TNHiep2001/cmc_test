@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { saveInfoUser } from "../../store/reducers/infoUser";
 import STORAGE_KEYS from "../../constants/storages";
 import { useNavigate } from "react-router-dom";
+import { ChevronLeft } from "@mui/icons-material";
 
 const cx = classNames.bind(styles);
 
@@ -81,6 +82,18 @@ const Login = (props) => {
     [dispatch, navigate]
   );
 
+  const handleBack = () => {
+    navigate("/listProduct");
+  };
+
+  const renderBtnBack = () => {
+    return (
+      <div className={cx("btn_back")} onClick={handleBack}>
+        <ChevronLeft className={cx("icon_back")} />
+      </div>
+    );
+  };
+
   const renderInputEmail = () => {
     const { email } = values;
 
@@ -134,6 +147,7 @@ const Login = (props) => {
   };
   return (
     <div className={cx("wrapper")}>
+      {renderBtnBack()}
       <div className={cx("inner")}>
         <div className={cx("title")}>Đăng nhập</div>
         {renderInputEmail()}

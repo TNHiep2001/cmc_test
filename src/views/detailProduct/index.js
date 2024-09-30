@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames/bind";
 import styles from "./styles/DetailProduct.module.scss";
@@ -14,13 +14,31 @@ import {
 import { Button, Typography } from "@mui/material";
 import Rating from "react-rating-stars-component";
 import { convertPrice } from "../../utils/number";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { getDetailProduct } from "../../service/product";
+import { statusCode } from "../../constants/status";
 
 const cx = classNames.bind(styles);
 
 const DetailProduct = (props) => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const [count, setCount] = useState(1);
+  const [dataDetailProduct, setDataDetailProduct] = useState();
+
+  const handleGetDetailProduct = useCallback(async () => {
+    const { data, status_code, message } = await getDetailProduct(id);
+
+    if (status_code === statusCode.successNumer) {
+      setDataDetailProduct(data);
+    } else {
+      //bắn thông báo lỗi ở đây
+    }
+  }, [id]);
+
+  useEffect(() => {
+    handleGetDetailProduct();
+  }, [handleGetDetailProduct]);
 
   const handleAdd = () => {
     setCount((prev) => prev + 1);
@@ -63,30 +81,34 @@ const DetailProduct = (props) => {
           fontWeight={600}
           margin="7px 6px 0 0 "
         >
-          4.2
+          {dataDetailProduct?.rate}
         </Typography>
         <Rating
           count={5}
           size={24}
           activeColor="#ff881d" // Màu vàng cho các sao đã chọn
-          value={4.2}
+          value={dataDetailProduct?.rate}
         />
       </div>
     );
   };
 
   const renderQuantityRate = () => {
-    return <div className={cx("quantity_rate")}>420 đánh giá</div>;
+    return (
+      <div
+        className={cx("quantity_rate")}
+      >{`${dataDetailProduct?.countRate} đánh giá`}</div>
+    );
   };
 
   const renderPrice = () => {
     return (
       <div className={cx("price")}>
         <Typography className={cx("old_price")}>
-          {convertPrice(50000)}
+          {convertPrice(dataDetailProduct?.price)}
         </Typography>
         <Typography className={cx("sale_price")}>
-          {convertPrice(19000)}
+          {convertPrice(dataDetailProduct?.price * 0.7)}
         </Typography>
       </div>
     );
@@ -150,13 +172,9 @@ const DetailProduct = (props) => {
   const renderContentProduct = () => {
     return (
       <div className={cx("content_product")}>
-        <img
-          src="https://down-vn.img.susercontent.com/file/sg-11134201-23010-qusbwpefyylvd3.webp"
-          alt=""
-          className={cx("image")}
-        />
+        <img src={dataDetailProduct?.image} alt="" className={cx("image")} />
         <div className={cx("info_product")}>
-          <div className={cx("title")}>Sản phẩm 1</div>
+          <div className={cx("title")}>{dataDetailProduct?.title}</div>
           <div className={cx("feedback")}>
             {renderInfoRate()}
             {renderQuantityRate()}
@@ -181,7 +199,7 @@ const DetailProduct = (props) => {
       <div className={cx("desc_product")}>
         <Typography className={cx("title")}>Mô tả sản phẩm</Typography>
         <Typography className={cx("desc")}>
-          Thông tin chi tiết sản phẩm 1 ở đây
+          {dataDetailProduct?.description}
         </Typography>
       </div>
     );

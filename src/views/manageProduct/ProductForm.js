@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import {
   Box,
@@ -7,7 +7,7 @@ import {
   Container,
   Typography,
 } from "@mui/material";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import classNames from "classnames/bind";
 import styles from "./styles/ProductForm.module.scss";
@@ -17,11 +17,18 @@ import FormSelect from "../../components/FormControl/FormSelect";
 import InputFile from "../../components/FormControl/InputFile";
 import { IMG_SIZE_UPLOAD } from "../../constants/units";
 import { textErrorSizeImageCustom } from "../../constants/message";
+import {
+  createProduct,
+  editProduct,
+  getDetailProduct,
+} from "../../service/product";
+import { statusCode } from "../../constants/status";
 
 const cx = classNames.bind(styles);
 
 const ProductForm = (props) => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState();
   // Dùng để render ra UI
@@ -41,7 +48,16 @@ const ProductForm = (props) => {
     initialValues: initProduct,
     // validationSchema: amenitiesSchema(id),
     onSubmit: (values) => {
-      console.log(values);
+      const data = {
+        ...values,
+        // image: previewFile.image,
+      };
+
+      if (id) {
+        handleUpdateProduct(data);
+      } else {
+        handleCreateProduct(data);
+      }
     },
   });
   const {
@@ -61,6 +77,50 @@ const ProductForm = (props) => {
     }
     return "";
   };
+
+  const handleCreateProduct = async (data) => {
+    setLoading(true);
+    try {
+      const res = await createProduct(data);
+      if (
+        res.status_code === statusCode.successNumer ||
+        res.status_code === statusCode.createdSuccess
+      ) {
+        navigate(-1);
+      } else {
+        // Xử lý thông báo tạo thất bại ở đây
+      }
+    } catch (error) {}
+    setLoading(false);
+  };
+
+  const handleUpdateProduct = async (data) => {
+    setLoading(true);
+    try {
+      const res = await editProduct(data, id);
+      if (res.status_code === statusCode.successNumer) {
+        navigate(-1);
+      } else {
+        // Xử lý thông báo tạo thất bại ở đây
+      }
+    } catch (error) {}
+    setLoading(false);
+  };
+
+  const handleGetDetailProduct = useCallback(async () => {
+    const { data, status_code, message } = await getDetailProduct(id);
+
+    if (status_code === statusCode.successNumer) {
+      setValues(data);
+      setPreviewFile((prev) => ({ ...prev, image: data?.image }));
+    } else {
+      //bắn thông báo lỗi ở đây
+    }
+  }, [id, setValues]);
+
+  useEffect(() => {
+    if (id) handleGetDetailProduct();
+  }, [handleGetDetailProduct, id]);
 
   const renderTitle = () => {
     const title = () => {
@@ -144,8 +204,8 @@ const ProductForm = (props) => {
 
       if (errorImage) return;
 
-      setFieldValue(name, file);
       const url = URL.createObjectURL(file);
+      setFieldValue(name, url);
       setPreviewFile((previewFile) => {
         return {
           ...previewFile,

@@ -69,3 +69,17 @@
         }
     }
 }
+
+.action_login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+
+    .btn_login {
+        display: flex;
+        gap: 8px;
+        background: #1976d2;
+        color: #fff;
+    }
+}
