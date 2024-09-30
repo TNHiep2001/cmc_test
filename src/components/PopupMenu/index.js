@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../../store/reducers/infoUser";
 import { getInfoUserSelector } from "../../store/reducers/infoUser/infoUserSelector";
+import { ROLE } from "../../constants/user";
 
 const cx = classNames.bind(styles);
 
@@ -21,7 +22,7 @@ const PopupMenu = ({ isShowPopupMenu, setIsShowPopupMenu }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { token } = useSelector(getInfoUserSelector);
+  const { token, user } = useSelector(getInfoUserSelector);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -41,14 +42,15 @@ const PopupMenu = ({ isShowPopupMenu, setIsShowPopupMenu }) => {
   };
 
   const renderManageProduct = () => {
-    return (
-      <div className={cx("action_menu")} onClick={handleNavigateManageProd}>
-        <Button className={cx("btn_action_menu")}>
-          <ManageSearch />
-          <Typography className={cx("title")}>Quản lý sản phẩm</Typography>
-        </Button>
-      </div>
-    );
+    if (user?.role === ROLE.admin)
+      return (
+        <div className={cx("action_menu")} onClick={handleNavigateManageProd}>
+          <Button className={cx("btn_action_menu")}>
+            <ManageSearch />
+            <Typography className={cx("title")}>Quản lý sản phẩm</Typography>
+          </Button>
+        </div>
+      );
   };
 
   const renderUserProfile = () => {

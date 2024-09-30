@@ -8,6 +8,7 @@ import { AddCircleOutline, ChevronLeft } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { getListProduct } from "../../service/product";
 import { statusCode } from "../../constants/status";
+import { toast } from "react-toastify";
 
 const cx = classNames.bind(styles);
 
@@ -22,7 +23,7 @@ const ManageProduct = (props) => {
     if (status_code === statusCode.successNumer) {
       setDataProduct(data);
     } else {
-      //bắn thông báo lỗi ở đây
+      toast.error(message);
     }
   }, []);
 

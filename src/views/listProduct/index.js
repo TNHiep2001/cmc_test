@@ -6,6 +6,7 @@ import styles from "./styles/ListProduct.module.scss";
 import { Typography } from "@mui/material";
 import { statusCode } from "../../constants/status";
 import { getListProduct } from "../../service/product";
+import { toast } from "react-toastify";
 
 const cx = classNames.bind(styles);
 
@@ -18,7 +19,7 @@ const ListProduct = (props) => {
     if (status_code === statusCode.successNumer) {
       setDataProduct(data);
     } else {
-      //bắn thông báo lỗi ở đây
+      toast.error(message);
     }
   }, []);
 

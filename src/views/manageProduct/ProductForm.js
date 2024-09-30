@@ -23,6 +23,7 @@ import {
   getDetailProduct,
 } from "../../service/product";
 import { statusCode } from "../../constants/status";
+import { toast } from "react-toastify";
 
 const cx = classNames.bind(styles);
 
@@ -80,30 +81,29 @@ const ProductForm = (props) => {
 
   const handleCreateProduct = async (data) => {
     setLoading(true);
-    try {
-      const res = await createProduct(data);
-      if (
-        res.status_code === statusCode.successNumer ||
-        res.status_code === statusCode.createdSuccess
-      ) {
-        navigate(-1);
-      } else {
-        // Xử lý thông báo tạo thất bại ở đây
-      }
-    } catch (error) {}
+
+    const res = await createProduct(data);
+    if (
+      res?.status_code === statusCode.successNumer ||
+      res?.status_code === statusCode.createdSuccess
+    ) {
+      toast.success("Tạo sản phẩm mới thành công");
+      navigate(-1);
+    } else {
+      toast.error(res?.message);
+    }
     setLoading(false);
   };
 
   const handleUpdateProduct = async (data) => {
     setLoading(true);
-    try {
-      const res = await editProduct(data, id);
-      if (res.status_code === statusCode.successNumer) {
-        navigate(-1);
-      } else {
-        // Xử lý thông báo tạo thất bại ở đây
-      }
-    } catch (error) {}
+    const res = await editProduct(data, id);
+    if (res?.status_code === statusCode.successNumer) {
+      toast.success("Chỉnh sửa sản phẩm thành công");
+      navigate(-1);
+    } else {
+      toast.error(res?.message);
+    }
     setLoading(false);
   };
 
@@ -114,7 +114,7 @@ const ProductForm = (props) => {
       setValues(data);
       setPreviewFile((prev) => ({ ...prev, image: data?.image }));
     } else {
-      //bắn thông báo lỗi ở đây
+      toast.error(message);
     }
   }, [id, setValues]);
 

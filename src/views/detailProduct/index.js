@@ -17,6 +17,7 @@ import { convertPrice } from "../../utils/number";
 import { useNavigate, useParams } from "react-router-dom";
 import { getDetailProduct } from "../../service/product";
 import { statusCode } from "../../constants/status";
+import { toast } from "react-toastify";
 
 const cx = classNames.bind(styles);
 
@@ -32,7 +33,7 @@ const DetailProduct = (props) => {
     if (status_code === statusCode.successNumer) {
       setDataDetailProduct(data);
     } else {
-      //bắn thông báo lỗi ở đây
+      toast.error(message);
     }
   }, [id]);
 

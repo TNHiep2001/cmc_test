@@ -9,6 +9,7 @@ import API from "../../../service/api";
 import request from "../../../service/http.service";
 import { statusCode } from "../../../constants/status";
 import { handleErrorResponse } from "../../../utils/handleError";
+import { toast } from "react-toastify";
 
 const cx = classNames.bind(styles);
 
@@ -22,11 +23,11 @@ const ItemProductManage = ({ infoItem, handleRefesh }) => {
         const res = await request().delete(url);
 
         if (res.status === statusCode.successNumer) {
+          toast.success("Xóa sản phẩm thành công");
           handleRefesh();
         }
       } catch (error) {
-        // Hiển hị lỗi xóa thất bại ở đây
-        handleErrorResponse(error);
+        toast.error(handleErrorResponse(error)?.message);
       }
     },
     [handleRefesh]

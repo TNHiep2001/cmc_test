@@ -13,6 +13,7 @@ import { saveInfoUser } from "../../store/reducers/infoUser";
 import STORAGE_KEYS from "../../constants/storages";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 const cx = classNames.bind(styles);
 
@@ -52,7 +53,7 @@ const Login = (props) => {
 
   const handleLogin = useCallback(
     async (values) => {
-      const { data, status_code } = await getListUser();
+      const { data, status_code, message } = await getListUser();
 
       if (status_code === statusCode.successNumer) {
         //check tài khoản ở dây
@@ -70,12 +71,14 @@ const Login = (props) => {
           );
           localStorage.setItem(STORAGE_KEYS.INFO_USER, JSON.stringify(user));
           localStorage.setItem(STORAGE_KEYS.TOKEN, "123jqk");
-
+          toast.success("Đăng nhập thành công");
           navigate("/listProduct");
         } else {
+          toast.error("Vui lòng kiểm tra lại tài khoản hoặc mật khẩu");
           setErrorLogin("Vui lòng kiểm tra lại tài khoản hoặc mật khẩu");
         }
       } else {
+        toast.error(message);
         setErrorLogin("Đăng nhập thất bại");
       }
     },

@@ -45,7 +45,7 @@ export const createProduct = async (data) => {
       status_code: response.status,
     };
   } catch (error) {
-    handleErrorResponse(error);
+    return handleErrorResponse(error);
   }
 };
 
@@ -58,6 +58,6 @@ export const editProduct = async (data, id) => {
       status_code: response.status,
     };
   } catch (error) {
-    handleErrorResponse(error);
+    return handleErrorResponse(error);
   }
 };
