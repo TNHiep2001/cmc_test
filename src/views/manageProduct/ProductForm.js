@@ -24,6 +24,7 @@ import {
 } from "../../service/product";
 import { statusCode } from "../../constants/status";
 import { toast } from "react-toastify";
+import { productSchema } from "../../schema/product";
 
 const cx = classNames.bind(styles);
 
@@ -47,7 +48,7 @@ const ProductForm = (props) => {
    */
   const formik = useFormik({
     initialValues: initProduct,
-    // validationSchema: amenitiesSchema(id),
+    validationSchema: productSchema(),
     onSubmit: (values) => {
       const data = {
         ...values,
@@ -218,12 +219,13 @@ const ProductForm = (props) => {
   const renderImageProduct = () => {
     return (
       <InputFile
+        required
         label="Ảnh sản phẩm"
         id="image"
         name="image"
         previewImage={previewFile.image}
         onChange={onChangeOneImage}
-        textError={errorFile.image}
+        textError={errorFile.image || validateInputField("image")}
       />
     );
   };

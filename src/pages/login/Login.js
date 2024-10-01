@@ -14,6 +14,7 @@ import STORAGE_KEYS from "../../constants/storages";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeft } from "@mui/icons-material";
 import { toast } from "react-toastify";
+import { loginSchema } from "../../schema/login";
 
 const cx = classNames.bind(styles);
 
@@ -29,7 +30,7 @@ const Login = (props) => {
    */
   const formik = useFormik({
     initialValues: initInfoUser,
-    // validationSchema: amenitiesSchema(id),
+    validationSchema: loginSchema(),
     onSubmit: (values) => {
       handleLogin(values);
     },

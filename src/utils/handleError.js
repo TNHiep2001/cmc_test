@@ -1,5 +1,3 @@
-// import { store } from "store/index";
-// import { openDialogUnauthorized } from "store/reducers/dialog";
 import { statusCode } from "../constants/status";
 
 export const handleErrorResponse = (errors) => {
@@ -12,18 +10,20 @@ export const handleErrorResponse = (errors) => {
       }
 
       case statusCode.unauthorized: {
-        // Hiển thị popup phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại
-        // store.dispatch(openDialogUnauthorized());
-        return "Không được ủy quyền";
+        return "Bạn chưa đăng nhập. Vui lòng đăng nhập lại.";
       }
 
       case statusCode.notFound: {
-        return "Không tìm thấy";
+        return "Không tìm thấy tài nguyên.";
+      }
+
+      case statusCode.forbidden: {
+        return "Bạn không có quyền truy cập.";
       }
 
       default: {
         // Trường hợp lỗi 500 thông thường do không thể kết nối tới server
-        return "Lỗi máy chủ";
+        return "Lỗi máy chủ. Vui lòng thử lại sau.";
       }
     }
   };

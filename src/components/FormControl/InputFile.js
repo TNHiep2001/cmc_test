@@ -27,7 +27,7 @@ const InputFile = ({
         sx={{ fontSize: "16px", color: "#000" }}
         className="col-form-label"
       >
-        {label}
+        {label}{" "}
         {required && (
           <Typography component="span" color="error">
             *
@@ -116,7 +116,9 @@ const InputFile = ({
           {renderTextUploading()}
           {renderBtnChooseFile()}
         </Box>
-        <Typography color="error">{textError}</Typography>
+        <Typography style={{ marginLeft: "4px" }} fontSize={12} color="error">
+          {textError}
+        </Typography>
       </Grid>
     </Grid>
   );
