@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import classNames from "classnames/bind";
 import styles from "./styles/ManageProduct.module.scss";
 import ItemProductManage from "./components/ItemProductManage";
@@ -16,8 +16,10 @@ const ManageProduct = (props) => {
   const navigate = useNavigate();
 
   const [dataProduct, setDataProduct] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleGetListProduct = useCallback(async () => {
+    setLoading(true);
     const { data, status_code, message } = await getListProduct();
 
     if (status_code === statusCode.successNumer) {
@@ -25,6 +27,7 @@ const ManageProduct = (props) => {
     } else {
       toast.error(message);
     }
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -81,6 +84,21 @@ const ManageProduct = (props) => {
       </div>
     );
   };
+
+  if (loading)
+    return (
+      <Box
+        sx={{
+          width: "100%",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <CircularProgress color="error" />
+      </Box>
+    );
 
   return (
     <div className={cx("wrapper")}>

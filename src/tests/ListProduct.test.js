@@ -4,6 +4,7 @@ import ListProduct from "../views/listProduct";
 import { getListProduct } from "../service/product";
 import { Provider } from "react-redux";
 import { store } from "../store";
+import { MemoryRouter } from "react-router-dom";
 
 // Mock các module bên ngoài
 jest.mock("../service/product");
@@ -27,7 +28,9 @@ describe("ListProduct Component", () => {
   test("Hiển thị tiêu đề danh sách sản phẩm", () => {
     render(
       <Provider store={store}>
-        <ListProduct />
+        <MemoryRouter>
+          <ListProduct />
+        </MemoryRouter>
       </Provider>
     );
     // Kiểm tra xem tiêu đề có được render đúng không
@@ -43,7 +46,9 @@ describe("ListProduct Component", () => {
 
     render(
       <Provider store={store}>
-        <ListProduct />
+        <MemoryRouter>
+          <ListProduct />
+        </MemoryRouter>
       </Provider>
     );
 
@@ -61,7 +66,9 @@ describe("ListProduct Component", () => {
 
     render(
       <Provider store={store}>
-        <ListProduct />
+        <MemoryRouter>
+          <ListProduct />
+        </MemoryRouter>
       </Provider>
     );
 

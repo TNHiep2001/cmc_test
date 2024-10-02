@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import ItemProduct from "./components/ItemProduct";
 import classNames from "classnames/bind";
 import styles from "./styles/ListProduct.module.scss";
-import { Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { statusCode } from "../../constants/status";
 import { getListProduct } from "../../service/product";
 import { toast } from "react-toastify";
@@ -12,8 +12,10 @@ const cx = classNames.bind(styles);
 
 const ListProduct = (props) => {
   const [dataProduct, setDataProduct] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleGetListProduct = useCallback(async () => {
+    setLoading(true);
     const { data, status_code, message } = await getListProduct();
 
     if (status_code === statusCode.successNumer) {
@@ -21,6 +23,7 @@ const ListProduct = (props) => {
     } else {
       toast.error(message);
     }
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -44,6 +47,21 @@ const ListProduct = (props) => {
       </Typography>
     );
   };
+
+  if (loading)
+    return (
+      <Box
+        sx={{
+          width: "100%",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <CircularProgress color="error" />
+      </Box>
+    );
 
   return (
     <div className={cx("wrapper")}>

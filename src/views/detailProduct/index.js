@@ -11,7 +11,7 @@ import {
   RemoveCircleOutline,
   ShoppingCart,
 } from "@mui/icons-material";
-import { Button, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import Rating from "react-rating-stars-component";
 import { convertPrice } from "../../utils/number";
 import { useNavigate, useParams } from "react-router-dom";
@@ -26,8 +26,10 @@ const DetailProduct = (props) => {
   const { id } = useParams();
   const [count, setCount] = useState(1);
   const [dataDetailProduct, setDataDetailProduct] = useState();
+  const [loading, setLoading] = useState(false);
 
   const handleGetDetailProduct = useCallback(async () => {
+    setLoading(true);
     const { data, status_code, message } = await getDetailProduct(id);
 
     if (status_code === statusCode.successNumer) {
@@ -35,6 +37,7 @@ const DetailProduct = (props) => {
     } else {
       toast.error(message);
     }
+    setLoading(false);
   }, [id]);
 
   useEffect(() => {
@@ -205,6 +208,21 @@ const DetailProduct = (props) => {
       </div>
     );
   };
+
+  if (loading)
+    return (
+      <Box
+        sx={{
+          width: "100%",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <CircularProgress color="error" />
+      </Box>
+    );
 
   return (
     <div className={cx("wrapper")}>
